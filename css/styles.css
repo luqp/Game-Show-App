@@ -12,7 +12,7 @@
   --color-keys: #37474F;
   --color-keys-light: #E5E5E5;
   --font-size-large: 60px;
-  --font-size-medium: 20px;
+  --font-size-medium: 30px;
   --transition: all .2s ease-in-out;
 }
 
@@ -51,7 +51,7 @@ button {
   border: 1px solid transparent;
   padding: .5rem 1rem;
   color: var(--color-keys);
-  font-size: var(--font-size-medium);
+  font-size: 24px;
   background-color: var(--color-keys-light);
   border-radius: 5px;
   -webkit-transition: var(--transition);
@@ -96,7 +96,7 @@ button {
   font-size: var(--font-size-medium);
   height: 65px;
   width: 65px;
-  padding: 20px 1px 0 1px;
+  padding: 12px 1px 0 1px;
   margin-right: 2px;
   color: transparent;
   background: var(--color-neutral-light);
@@ -104,26 +104,45 @@ button {
 }
 
 .space {
-  width: 15px;
+  width: 20px;
 }
-
-
 
 .show {
   color: #fff;
-  background-color: #4ac0d5;
-  font-size: 20px;
+  background-color: #77cfdf;
+  font-size: (--font-size-medium);
   height: 65px;
   width: 65px;
-  padding: 20px 1px 0 1px;
+  padding: 12px 1px 0 1px;
   margin-right: 2px;
   border-radius: 5px;
   -webkit-animation-duration: .5s;
   animation-duration: .5s;
 }
 
+.pulse {
+  animation: pulse 1s;
+  border: 1px solid white;
+  box-shadow: 0px 1px 20px rgb(202, 231, 236);
+}
+
+.hinge {
+  animation: hinge 1s ease-out;
+  backface-visibility: hidden;
+}
+.letter:hover {
+  box-shadow: 0px 3px 6px hsla(10,90%,0%, 0.4);
+}
 
 /* Keyboard */
+
+.key {
+  box-shadow: 0px 3px 6px hsla(10,90%,0%, 0.4);
+}
+
+.key:active {
+  box-shadow: 0px 0px;
+}
 
 .keyrow {
   display: flex;
@@ -133,7 +152,7 @@ button {
 .chosen {
   background: #3a3f58;
   border-radius: 5px;
-  font-size: var(--font-size-medium);
+  font-size: 24px;
   color: #FFFFFF;
 }
 
@@ -172,7 +191,7 @@ button {
   bottom: 0;
   left: 0;
   right: 0;
-  border-radius: 5px;
+  /*border-radius: 5px;*/
 }
 
 .title {
@@ -189,6 +208,7 @@ button {
 
 .win {
   background-color: var(--color-win);
+  animation: rubberBand 1s;
 }
 
 .win a {
@@ -197,8 +217,26 @@ button {
 
 .lose {
   background-color: #f5785f;
+  animation: bounceInDown 1s;
 }
 
 .lose a {
   color: var(--color-lose);
 }
+
+/* Score Bar */
+
+#scoreboard li {
+  margin: 0 0.5em;
+}
+
+#scoreboard li:hover{
+  animation: pulse 0.85s;
+}
+
+.animation-heart {
+  animation: shake 0.85s;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+
