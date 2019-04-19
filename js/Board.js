@@ -5,7 +5,12 @@ class Board {
         this.active = active;
         this.phrase = null;
     }
-
+get phrase() {
+    return this._phrase;
+}
+set phrase(phrase) {
+    this._phrase = phrase;
+}
 
     drawGame(phrase) {
         this.phrase = new Phrase(phrase);
@@ -30,27 +35,25 @@ class Board {
             }
             else {
                 box.className = `hide letter ${letter}`;
+                box.innerHTML = '?';
             }
-            box.innerHTML = letter;
             return box;
         });
-
         return lettersBoxes;
     }
 
     showMatchedLetter(char) {
         const letters = this.container.children;
-
         const exists = this.phrase.checkLetter(char);
         if (exists.length === 0) {
             return false;
         }
 
         for (const index of exists) {
-
             const letter = letters[index];
-            const classShow = letter.className.replace(/(hide)\s(\w+)/,`show $2`);
+            const classShow = letter.className.replace("hide", "show");
             letter.className = classShow;
+            letter.textContent = char;
         }
 
         return true;
