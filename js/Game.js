@@ -2,88 +2,105 @@
  * Project 4 - OOP Game App
  * Game.js */
 class Game {
-    constructor(container, overlay, scoreBar) {
+    constructor(container, phrases, scoreBar, overlay, active = false) {
         this.missed = 0;
-        this.phrases = [
-            'number four',
-            'We were proud',
-            'they were perfectly normal',  
-            'thank you',
-            'They were the last people',
-            'be involved', 
-            'anything strange or mysterious',
-            'he was the director',
-            'he had a mustache',
-            'very useful',
-            'she spent so much',
-            'the neighbors',
-            'a small boy',
-            'they also had a secret', 
-            'their greatest fear',
-            'somebody',
-            'discover'
-        ];
+        this.phrases = phrases;
         this.board = new Board(container)
-        this.overlay = overlay;
         this.scoreBar = scoreBar;
+        this.overlay = overlay;
+        this.active = active;
     }
 
-    get gameBoard() {
-        return this.board;
+    get board() {
+        return this._board;
     }
+    set board(board) {
+        this._board = board;
+    }
+
     getRandomPhrase() {
         const index = Math.floor(Math.random() * this.phrases.length)
         return this.phrases[index];
     }
-
+    
     starGame() {
+        this.active = true;
+        this.missed = 0;
         this.board.drawGame(this.getRandomPhrase());
     }
 
-    handleInteraction(selectedHTML) {
-        selectedHTML.disabled = true;
-        const classN = selectedHTML.className;
-        selectedHTML.className = `chosen ${classN}`;
-
-        const rightGuess = this.gameBoard.showMatchedLetter(selectedHTML.textContent);
-
+    handleInteraction(key) {
+        let endGame = false;
+        const classN = key.className;
+        key.className = `chosen ${classN}`;
+        key.disabled = true;
+        
+        const rightGuess = this.board.showMatchedLetter(key.textContent);
         if (rightGuess) {
-            this.checkForWin();
+            endGame = this.checkForWin();
         }
         else {
-            this.removeLife();
+            endGame = this.removeLife();
         }
+        return endGame;
     }
 
     checkForWin() {
-        const missing = this.board.container.getElementsByClassName('hide');
-        
-        if (missing.length === 0) {
-            this.gameOver("win");
+        const hiddenLetters = this.board.container.getElementsByClassName('hide');
+        const isEndGame = hiddenLetters.length === 0;
+
+        if (isEndGame) {
+            this.active = false;
+            this.gameOver("win", "pulse");
         }
+
+        return isEndGame;
     }
 
     removeLife() {
         this.missed += 1;
+        const isEndGame = this.missed === 5;
         const heart = this.scoreBar[this.scoreBar.length - this.missed];
-        this.replaceHeart(heart, "lostHeart");
+        heart.className = 'animation-heart';
+        
+        delayChangeHeart(this);
+        
+        if (isEndGame) {
+            this.active = false;
+            this.gameOver("lose", "hinge");
+        }
 
-        if (this.missed === 5) {
-            this.gameOver("lose");
+        return isEndGame;
+
+        function delayChangeHeart(game) {
+            setTimeout(() => {
+                game.replaceHeart(heart, "break");
+                setTimeout(() => {
+                    game.replaceHeart(heart, "lost");
+                }, 800);
+                
+            }, 500);
         }
     }
 
     replaceHeart(heart, typeHeart) {
         const url = heart.src;
-        heart.src = url.replace(/(\w+)(\.png)/, `${typeHeart}$2`);
+        heart.src = url.replace(/(\w+)(\.svg)/, `${typeHeart}$2`);
     }
 
-    gameOver(classN) {
-        this.overlay.className = classN;
-        this.overlay.style.display = 'block';
+    gameOver(finalState, animationClass) {
+        delayToCover(this, this.animationTime(animationClass));
+        
         const banner = document.getElementById('game-over-message');
-        banner.textContent = `You ${classN}`;
-        this.reset();
+        banner.textContent = `You ${finalState}`;
+        this.overlay.className = finalState;
+
+        function delayToCover(game, time) {
+            setTimeout(() => {
+                game.overlay.style.display = 'flex';
+                game.reset();
+            }, time);
+        }
     }
 
     reset() {
@@ -98,7 +115,25 @@ class Game {
         }
 
         for (const heart of this.scoreBar) {
-            this.replaceHeart(heart, "liveHeart");
+            heart.className = '';
         }
+    }
+
+    animationTime(classN) {
+        const boxes = document.getElementsByClassName('letter');
+
+        for (let i = 0; i < boxes.length; i++) {
+            setTimeout(() => {
+                const c = boxes[i].className;
+                boxes[i].className = `${classN} ${c}`;
+                if (classN === "hinge") {
+                    setTimeout(() => {
+                        boxes[i].style.opacity = 0;
+                    }, 500 + (i * 100));
+                }
+            }, 200 + (i * 100));
+        }
+
+        return (4000 + (boxes.length * 100));
     }
 }
