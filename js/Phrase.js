@@ -24,4 +24,20 @@
         }
         return inPhrase;
     }
+    // break the phrase in letters
+    addPhraseToDisplay() {
+        const letters = this.phrase.split('');
+        const lettersBoxes = letters.map( letter => {
+            const box = document.createElement('li');
+            if (letter === ' '){
+                box.className = `space`;
+            }
+            else {
+                box.className = `hide letter ${letter}`;
+                box.innerHTML = '?';
+            }
+            return box;
+        });
+        return lettersBoxes;
+    }
  }
