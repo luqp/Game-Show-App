@@ -8,7 +8,7 @@ class Board {
     // Obtains a new phrase and draw it
     drawGame(phrase) {
         this.phrase = new Phrase(phrase);
-        const boxes = this.addPhraseToDisplay();
+        const boxes = this.phrase.addPhraseToDisplay();
         for (const box of boxes) {
             this.container.appendChild(box);
         }
@@ -19,22 +19,7 @@ class Board {
         this.container.innerHTML = "";
         this.active = false;
     }
-    // break the phrase in letters
-    addPhraseToDisplay() {
-        const letters = this.phrase.phrase.split('');
-        const lettersBoxes = letters.map( letter => {
-            const box = document.createElement('li');
-            if (letter === ' '){
-                box.className = `space`;
-            }
-            else {
-                box.className = `hide letter ${letter}`;
-                box.innerHTML = '?';
-            }
-            return box;
-        });
-        return lettersBoxes;
-    }
+    
     // Changes the letter style
     showMatchedLetter(char) {
         const letters = this.container.children;
@@ -55,19 +40,22 @@ class Board {
     // Adds an animation to all letters
     animationTime(animation) {
         const boxes = this.container.children;
-
+        let totalTime = 0;
         for (let i = 0; i < boxes.length; i++) {
+            const time = 300 + (i * 100);
+            totalTime = time + (boxes.length * 170);
             setTimeout(() => {
                 const c = boxes[i].className;
                 boxes[i].className = `${animation} ${c}`;
                 if (animation === "hinge") {
                     setTimeout(() => {
                         boxes[i].style.opacity = 0;
-                    }, 100 + (i * 50));
+                    }, 100);
                 }
-            }, 200 + (i * 100));
+            }, time);
+            
         }
 
-        return (4000 + (boxes.length * 100));
+        return (totalTime);
     }
 }
