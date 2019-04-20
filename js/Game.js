@@ -11,13 +11,6 @@ class Game {
         this.active = active;
     }
 
-    get board() {
-        return this._board;
-    }
-    set board(board) {
-        this._board = board;
-    }
-
     getRandomPhrase() {
         const index = Math.floor(Math.random() * this.phrases.length)
         return this.phrases[index];
@@ -28,23 +21,24 @@ class Game {
         this.missed = 0;
         this.board.drawGame(this.getRandomPhrase());
     }
-
+    // Modify the key selected and check the game state
     handleInteraction(key) {
         let endGame = false;
         const classN = key.className;
-        key.className = `chosen ${classN}`;
         key.disabled = true;
         
         const rightGuess = this.board.showMatchedLetter(key.textContent);
         if (rightGuess) {
+            key.className = `chosen ${classN}`;
             endGame = this.checkForWin();
         }
         else {
+            key.className = `wrong ${classN}`;
             endGame = this.removeLife();
         }
         return endGame;
     }
-
+    // Checks if all letters were showed
     checkForWin() {
         const hiddenLetters = this.board.container.getElementsByClassName('hide');
         const isEndGame = hiddenLetters.length === 0;
@@ -56,7 +50,7 @@ class Game {
 
         return isEndGame;
     }
-
+    // Modifies the score bar
     removeLife() {
         this.missed += 1;
         const isEndGame = this.missed === 5;
@@ -77,19 +71,19 @@ class Game {
                 game.replaceHeart(heart, "break");
                 setTimeout(() => {
                     game.replaceHeart(heart, "lost");
-                }, 800);
+                }, 500);
                 
             }, 500);
         }
     }
-
+    // Changes the heart type
     replaceHeart(heart, typeHeart) {
         const url = heart.src;
         heart.src = url.replace(/(\w+)(\.svg)/, `${typeHeart}$2`);
     }
-
+    // Handles the way to end game
     gameOver(finalState, animationClass) {
-        delayToCover(this, this.animationTime(animationClass));
+        delayToCover(this, this.board.animationTime(animationClass));
         
         const banner = document.getElementById('game-over-message');
         banner.textContent = `You ${finalState}`;
@@ -102,7 +96,7 @@ class Game {
             }, time);
         }
     }
-
+    // Update the elements style 
     reset() {
         this.board.eraseGame();
         const keyboard = document.getElementById('qwerty').children;
@@ -117,23 +111,5 @@ class Game {
         for (const heart of this.scoreBar) {
             heart.className = '';
         }
-    }
-
-    animationTime(classN) {
-        const boxes = document.getElementsByClassName('letter');
-
-        for (let i = 0; i < boxes.length; i++) {
-            setTimeout(() => {
-                const c = boxes[i].className;
-                boxes[i].className = `${classN} ${c}`;
-                if (classN === "hinge") {
-                    setTimeout(() => {
-                        boxes[i].style.opacity = 0;
-                    }, 500 + (i * 100));
-                }
-            }, 200 + (i * 100));
-        }
-
-        return (4000 + (boxes.length * 100));
     }
 }

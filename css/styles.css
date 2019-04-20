@@ -121,17 +121,17 @@ button {
 }
 
 .pulse {
-  animation: pulse 1s;
+  font-weight: bold;
+  color: #e9fcff;
   border: 1px solid white;
+  background-color: #54d1da;
   box-shadow: 0px 1px 20px rgb(202, 231, 236);
+  animation: pulse 1s;
 }
 
 .hinge {
   animation: hinge 1s ease-out;
   backface-visibility: hidden;
-}
-.letter:hover {
-  box-shadow: 0px 3px 6px hsla(10,90%,0%, 0.4);
 }
 
 /* Keyboard */
@@ -157,7 +157,7 @@ button {
 }
 
 .wrong {
-  background: #f7a964;
+  background: rgb(168, 107, 107);
   color: #FFFFFF;
 }
 
@@ -231,7 +231,7 @@ button {
 }
 
 #scoreboard li:hover{
-  animation: pulse 0.85s;
+  animation: pulse 0.85s infinite;
 }
 
 .animation-heart {

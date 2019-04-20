@@ -5,13 +5,7 @@ class Board {
         this.active = active;
         this.phrase = null;
     }
-get phrase() {
-    return this._phrase;
-}
-set phrase(phrase) {
-    this._phrase = phrase;
-}
-
+    // Obtains a new phrase and draw it
     drawGame(phrase) {
         this.phrase = new Phrase(phrase);
         const boxes = this.addPhraseToDisplay();
@@ -20,12 +14,12 @@ set phrase(phrase) {
         }
         this.active = true;
     }
-
+    // Clean the board
     eraseGame() {
         this.container.innerHTML = "";
         this.active = false;
     }
-
+    // break the phrase in letters
     addPhraseToDisplay() {
         const letters = this.phrase.phrase.split('');
         const lettersBoxes = letters.map( letter => {
@@ -41,7 +35,7 @@ set phrase(phrase) {
         });
         return lettersBoxes;
     }
-
+    // Changes the letter style
     showMatchedLetter(char) {
         const letters = this.container.children;
         const exists = this.phrase.checkLetter(char);
@@ -57,5 +51,23 @@ set phrase(phrase) {
         }
 
         return true;
+    }
+    // Adds an animation to all letters
+    animationTime(animation) {
+        const boxes = this.container.children;
+
+        for (let i = 0; i < boxes.length; i++) {
+            setTimeout(() => {
+                const c = boxes[i].className;
+                boxes[i].className = `${animation} ${c}`;
+                if (animation === "hinge") {
+                    setTimeout(() => {
+                        boxes[i].style.opacity = 0;
+                    }, 100 + (i * 50));
+                }
+            }, 200 + (i * 100));
+        }
+
+        return (4000 + (boxes.length * 100));
     }
 }

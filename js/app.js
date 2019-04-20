@@ -22,7 +22,7 @@ function changeHearts(scoreBar, image) {
         heart.src = image;
     }
 }
-// Add event listeners when you press on a key
+// Add event listeners to detect when you press on a key
 function activateKeyboard(game) {
     const keys = document.getElementById('qwerty');
     let selectedKeys = [];
