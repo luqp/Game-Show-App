@@ -1,9 +1,9 @@
 ## Game Show App
 # Phase Hunter
 
-[Phrase Hunter](https://windyludev.github.io/Game-Show-App/) is a game in which you have to guess the hidden phrase, choosing letters on a keyboard.
+[Phrase Hunter](https://luqp.github.io/Game-Show-App/) is a game in which you have to guess the hidden phrase, choosing letters on a keyboard.
 <p align="center">
-<img src="https://windyludev.github.io/Game-Show-App/images/phrase-hunter.jpg">
+<img src="https://luqp.github.io/Game-Show-App/images/phrase-hunter.jpg">
 </p>
 The game was building use JavaScript and OOP, works with the followin files:
 
